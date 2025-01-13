@@ -1,6 +1,4 @@
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 
 public class NumberOfIsland {
@@ -16,14 +14,14 @@ public class NumberOfIsland {
 
                 ++result;
                 queue.add(new Pair(i, j));
-                NumberOfIsland.lander(queue, collection);
+                NumberOfIsland.landerBFS(queue, collection);
             }
         }
 
         return result;
     }
 
-    private static void lander(Queue<Pair> queue, int[][] collection) {
+    private static void landerBFS(Queue<Pair> queue, int[][] collection) {
         Pair head = queue.remove();
         int i = head.i, j = head.j;
         collection[i][j] = 0;
@@ -42,20 +40,42 @@ public class NumberOfIsland {
         }
 
         if(!queue.isEmpty()){
-            NumberOfIsland.lander(queue, collection);
+            NumberOfIsland.landerBFS(queue, collection);
         }
     }
 
-    public static List<Integer> byDFS(int[][] collection) {
-        List<Integer> result = new ArrayList<>();
-        Queue<Integer> temp = new LinkedList<>();
+    public static int byDFS(int[][] collection) {
+        int result = 0;
 
         for (int i = 0; i < collection.length; ++i) {
             for (int j = 0; j < collection[0].length; ++j) {
-
+                if(collection[i][j] == 1){
+                    ++result;
+                    landerDFS(i, j, collection);
+                }
             }
         }
 
         return result;
+    }
+
+    private static void landerDFS(int i, int j, int[][] collection){
+        if(collection[i][j] == 0){
+            return;
+        }
+        collection[i][j] = 0;
+
+        if(i + 1 < collection.length){
+            landerDFS(i + 1, j, collection);
+        }
+        if(j + 1 < collection[0].length){
+            landerDFS(i, j + 1, collection);
+        }
+        if(i - 1 >= 0){
+            landerDFS(i - 1, j, collection);
+        }
+        if(j - 1 >= 0){
+            landerDFS(i, j - 1, collection);
+        }
     }
 }
